@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 
 const Carousel = () => {
   const images = [
-    'https://via.placeholder.com/800x400?text=Image+1',
-    'https://via.placeholder.com/800x400?text=Image+2',
-    'https://via.placeholder.com/800x400?text=Image+3',
+    '/img/1.jpg',
+    '/img/2.jpg',
+    '/img/3.jpg',
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -28,14 +28,23 @@ const Carousel = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-screen mx-auto">
-      {/* Image */}
-      <div className="relative">
-        <img
-          src={images[currentIndex]}
-          alt={`carousel ${currentIndex + 1}`}
-          className="w-full h-64 object-cover rounded-lg shadow-md"
-        />
+    <div className="relative w-full h-50 mx-auto pb-2 overflow-hidden"> {/* Added overflow-hidden to hide non-visible images */}
+      {/* Image Container */}
+      <div
+        className="flex transition-transform duration-700 ease-in-out"
+        style={{
+          transform: `translateX(-${currentIndex * 100}%)`, // This moves the images left or right
+        }}
+      >
+        {images.map((image, index) => (
+          <div key={index} className="w-full flex-shrink-0">
+            <img
+              src={image}
+              alt={`carousel ${index + 1}`}
+              className="w-full h-full object-cover rounded-lg shadow-md"
+            />
+          </div>
+        ))}
       </div>
 
       {/* Prev/Next Buttons */}
@@ -53,6 +62,7 @@ const Carousel = () => {
         &#10095;
       </button>
 
+      {/* Dots for navigation */}
       <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {images.map((_, index) => (
           <button
