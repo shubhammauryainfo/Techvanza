@@ -160,7 +160,7 @@ const Product = () => {
         try {
             // Delete the Product
             const productResponse = await fetch(
-                `${import.meta.env.VITE_API_URL}/api/posts/${id}`,
+                `${import.meta.env.VITE_API_URL}/api/products/${id}`,
                 {
                     method: "DELETE",
                     headers: {
@@ -231,7 +231,7 @@ const Product = () => {
         });
 
         try {
-            if (!newProduct.title?.trim() || !newProduct.description?.trim() || !newProduct.client?.trim() || (!newProduct.image && !isEditMode)) {
+            if (!newProduct.name?.trim() || !newProduct.description?.trim() || !newProduct.region?.trim() || (!newProduct.image && !isEditMode)) {
                 Swal.fire({
                     title: 'Error!',
                     text: 'All fields are required',
@@ -244,19 +244,25 @@ const Product = () => {
 
             let uploadedImageName = newProduct.image;
 
-            if (isEditMode && newProduct.image && newProduct.image) {
-
-                await fetch(`${import.meta.env.VITE_API_URL}/upload/${newProduct.image}`, {
+            // Delete existing image if in edit mode
+            if (isEditMode && newProduct.image) {
+                const deleteResponse = await fetch(`${import.meta.env.VITE_API_URL}/upload/${newProduct.image}`, {
                     method: 'DELETE',
                     headers: {
                         'auth-key': import.meta.env.VITE_API_KEY,
                     },
                 });
+
+                if (!deleteResponse.ok) {
+                    throw new Error('Failed to delete existing image.');
+                }
             }
 
-            if (newProduct.image) {
+            // Upload new image if present
+            if (newProduct.img) {
+                const imgFile = newProduct.img;
                 const formData = new FormData();
-                formData.append('file', newProduct.image);
+                formData.append('file', imgFile);
 
                 const uploadResponse = await fetch(`${import.meta.env.VITE_API_URL}/upload`, {
                     method: 'POST',
@@ -264,20 +270,29 @@ const Product = () => {
                 });
 
                 const uploadResult = await uploadResponse.json();
+
+                if (!uploadResponse.ok) {
+                    throw new Error('Image upload failed');
+                }
+
                 uploadedImageName = uploadResult.filename;
             }
 
             const productData = {
-                title: newProduct.title,
+                name: newProduct.name,
                 description: newProduct.description,
-                client: newProduct.client,
+                region: newProduct.region,
+                category: newProduct.category,
+                price: newProduct.price,
+                quantity: newProduct.quantity,
+                rating: newProduct.rating,
                 image: uploadedImageName,
             };
 
             const method = isEditMode ? 'PUT' : 'POST';
             const url = isEditMode
-                ? `${import.meta.env.VITE_API_URL}/api/posts/${newProduct._id}`
-                : `${import.meta.env.VITE_API_URL}/api/posts`;
+                ? `${import.meta.env.VITE_API_URL}/api/products/${newProduct._id}`
+                : `${import.meta.env.VITE_API_URL}/api/products`;
 
             const response = await fetch(url, {
                 method: method,
@@ -287,6 +302,13 @@ const Product = () => {
                 },
                 body: JSON.stringify(productData),
             });
+
+            // Log response for better debugging
+            const responseData = await response.json();
+
+            if (!response.ok) {
+                throw new Error(responseData.message || 'Failed to add/update product');
+            }
 
             Swal.fire({
                 title: 'Success!',
@@ -298,7 +320,7 @@ const Product = () => {
 
             setShowAddForm(false);
             setIsEditMode(false);
-            setNewProduct({ title: '', description: '', client: '', image: null });
+            setNewProduct({ name: '', description: '', price: '', quantity: '', rating: '', region: '', category: '', image: null });
             await fetchData();
         } catch (error) {
             console.error('Error adding/updating Product:', error);
@@ -314,19 +336,7 @@ const Product = () => {
     };
 
 
-    const handleDescriptionChange = (e) => {
-        const inputText = e.target.value;
-        const wordsArray = inputText.trim().split(/\s+/);
-        const wordCount = inputText.trim() ? wordsArray.length : 0;
 
-        if (wordCount <= 40) {
-            setNewProduct({ ...newProduct, description: inputText });
-            setWordCount(wordCount);
-            setWordLimitReached(false);
-        } else {
-            setWordLimitReached(true);
-        }
-    };
 
 
 
@@ -357,7 +367,7 @@ const Product = () => {
                     onClick={() => {
                         setShowAddForm(true);
                         setIsEditMode(false);
-                        setNewProduct({ title: '', description: '', client: '', image: null });
+                        setNewProduct({ name: '', description: '', price: '', quantity: '', rating: '', region: '', category: '', image: null, });
                     }}
 
                     className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 text-lg"
@@ -377,7 +387,7 @@ const Product = () => {
                             {/* Title */}
                             <div className="mb-3">
                                 <label className="block text-gray-700 text-sm font-bold mb-2">
-                                    Title:
+                                    Name:
                                 </label>
                                 <input
                                     type="text"
@@ -526,7 +536,7 @@ const Product = () => {
                                 />
                                 {isEditMode && newProduct.image && (
                                     <img
-                                        src={newProduct.image}
+                                        src={`${import.meta.env.VITE_API_URL}/uploads/${newProduct.image}`}
                                         alt="Current Product"
                                         className="mt-2 w-32 h-32 object-cover border"
                                     />

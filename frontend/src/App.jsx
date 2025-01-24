@@ -7,6 +7,7 @@ import Dashome from './dashboard/Dashome';
 import Auth from './dashboard/components/Auth';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
+import Product from './dashboard/Product';
 import Category from './components/category/Category';
 import CategoryPage from './pages/products/CategoryPage';
 
