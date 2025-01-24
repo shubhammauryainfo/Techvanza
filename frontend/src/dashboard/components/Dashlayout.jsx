@@ -57,9 +57,9 @@ const Dashlayout = ({ children }) => {
                     <h1 className="hidden md:flex text-xl font-bold flex-1">R&T DASHBOARD</h1>
                     <div className="flex items-center space-x-2">
                         {/* Placeholder for User Logo */}
-                        <div className="w-8 h-8 rounded-full bg-gray-600">
+                        <div className="w-8 h-8 rounded-full bg-gray-200">
                             <img
-                                src="/img/icon.png"
+                                src="/img/logo.png"
                                 alt="User Logo"
                                 className="w-8 h-8 rounded-full"
                             />
