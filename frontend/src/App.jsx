@@ -4,8 +4,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 
-import Conditions from './pages/Condition';
-import Auth from './dashboard/components/Auth';
+// import Conditions from './pages/Condition';
+// import Auth from './dashboard/components/Auth';
 
 const App = () => {
   return (
@@ -16,8 +16,8 @@ const App = () => {
             <Route path="/" element={<Home />} />
 
             {/* Auth pages */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/logout" element={<Logout />} />
+            {/* <Route path="/login" element={<Login />} />
+            <Route path="/logout" element={<Logout />} /> */}
             {/* Dashboard pages */}
             {/* <Route path="/dashboard"
               element={
