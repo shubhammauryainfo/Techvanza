@@ -17,7 +17,6 @@ const Home = () => {
       <Crafts />
       <Artisans />
       </Layout>
-  
   );
 };
 
