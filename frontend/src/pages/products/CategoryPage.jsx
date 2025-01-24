@@ -11,13 +11,13 @@ const CategoryPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        setLoading(true);
+        setLoading(true);  
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/products`,
           {
             params: { category: categoryName },
             headers: {
-              "Auth-key": import.meta.env.VITE_API_KEY // Add the API Key here
+              "Auth-key": import.meta.env.VITE_API_KEY 
             },
           }
         );
