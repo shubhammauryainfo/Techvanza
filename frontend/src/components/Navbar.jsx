@@ -1,5 +1,6 @@
 import React from 'react';
 import { FiMenu } from 'react-icons/fi'; // Import the menu icon from React Icons
+import logo from '.';
 
 const Navbar = () => {
   return (
