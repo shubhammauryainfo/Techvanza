@@ -1,10 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const categories = [
-  { name: 'Crafts', image: 'https://via.placeholder.com/400x300?text=Crafts' },
-  { name: 'Artisans', image: 'https://via.placeholder.com/400x300?text=Artisans' },
-  { name: 'Handmade Jewelry', image: 'https://via.placeholder.com/400x300?text=Jewelry' },
-  { name: 'Textiles', image: 'https://via.placeholder.com/400x300?text=Textiles' },
+  { name: 'Crafts', route: 'crafts', image: 'https://via.placeholder.com/400x300?text=Crafts' },
+  { name: 'Artisans', route: 'artisans', image: 'https://via.placeholder.com/400x300?text=Artisans' },
+  { name: 'Handmade Jewelry', route: 'handmade-jewelry', image: 'https://via.placeholder.com/400x300?text=Jewelry' },
+  { name: 'Textiles', route: 'textiles', image: 'https://via.placeholder.com/400x300?text=Textiles' },
 ];
 
 const Category = () => {
@@ -13,7 +14,11 @@ const Category = () => {
       <h2 className="text-3xl font-semibold text-gray-800 text-center mb-8">Shop by Category</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {categories.map((category, index) => (
-          <div key={index} className="group relative rounded-lg overflow-hidden shadow-lg transition duration-300 transform hover:scale-105 hover:shadow-xl">
+          <Link
+            key={index}
+            to={`/category/${category.route}`} // Use the route to navigate
+            className="group relative rounded-lg overflow-hidden shadow-lg transition duration-300 transform hover:scale-105 hover:shadow-xl"
+          >
             <img
               src={category.image}
               alt={category.name}
@@ -21,14 +26,8 @@ const Category = () => {
             />
             <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-50 p-4 text-white text-center transition duration-300 group-hover:bg-opacity-75">
               <h3 className="text-lg font-semibold">{category.name}</h3>
-              <a
-                href="#"
-                className="text-sm underline mt-2 block hover:text-yellow-300"
-              >
-                Explore
-              </a>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
