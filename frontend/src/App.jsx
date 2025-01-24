@@ -7,6 +7,7 @@ import Dashome from './dashboard/Dashome';
 import Auth from './dashboard/components/Auth';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
+import Product from './dashboard/Product';
 
 const App = () => {
   return (
@@ -24,6 +25,13 @@ const App = () => {
               element={
                 <Auth>
                   <Dashome />
+                </Auth>
+
+              } />
+            <Route path="/dashboard/products"
+              element={
+                <Auth>
+                  <Product />
                 </Auth>
 
               } />
